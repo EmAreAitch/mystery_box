@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Box Challenge</title>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #4a06e0;
+            --secondary-color: #ff6b6b;
+            --background-color: #f9f9f9;
+            --text-color: #333;
+            --box-color: #333;
+            --box-lid-color: #444;
+            --card-bg: white;
+            --admin-color: #2c974b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+        
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .nav-tab {
+            padding: 0.5rem 1.5rem;
+            margin: 0 0.5rem;
+            background-color: #ddd;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .nav-tab.admin {
+            background-color: var(--admin-color);
+            color: white;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        #intro-section p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Buttons */
+        .primary-btn, .secondary-btn, .admin-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .primary-btn {
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 1rem;
+        }
+        
+        .secondary-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            margin: 0 0.5rem;
+        }
+        
+        .admin-btn {
+            background-color: var(--admin-color);
+            color: white;
+            margin: 0 0.5rem;
+        }
+        
+        .primary-btn:hover, .secondary-btn:hover, .admin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .primary-btn:active, .secondary-btn:active, .admin-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        /* Mystery Box Animation */
+        .mystery-box {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 2rem auto;
+        }
+        
+        .box-base {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 70%;
+            background-color: var(--box-color);
+            border-radius: 10px;
+            z-index: 1;
+        }
+        
+        .box-lid {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 40%;
+            background-color: var(--box-lid-color);
+            border-radius: 10px 10px 0 0;
+            transform-origin: top;
+            transition: transform 0.5s ease;
+            z-index: 2;
+        }
+        
+        .open-box .box-lid {
+            transform: rotateX(-180deg);
+        }
+        
+        /* Countdown */
+        #countdown {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            color: var(--primary-color);
+        }
+        
+        /* Result Section */
+        .combination-display {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .combination-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .combination-items {
+            font-size: 1.8rem;
+            margin: 1.5rem 0;
+            line-height: 1.5;
+        }
+        
+        .item {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem;
+            background-color: #e9eaff;
+            border-radius: 50px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .actions {
+            margin-top: 2rem;
+        }
+        
+        /* Admin Section */
+        #admin-section {
+            width: 100%;
+            max-width: 800px;
+            text-align: left;
+        }
+        
+        #admin-section h2 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .combination-list {
+            margin: 2rem 0;
+            width: 100%;
+        }
+        
+        .combination-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        
+        .combination-table th, .combination-table td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+        }
+        
+        .combination-table th {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: left;
+        }
+        
+        .combination-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .combination-table tr:hover {
+            background-color: #e9eaff;
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Footer */
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        /* Utility Classes */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mystery Box Startup Challenge</h1>
+            <p class="tagline">Draw a random combination and pitch your innovative startup!</p>
+        </header>
+        
+        <div class="nav-tabs">
+            <div id="challenge-tab" class="nav-tab active">Challenge</div>
+            <div id="admin-tab" class="nav-tab admin">Manage Combinations</div>
+        </div>
+
+        <div class="main-content">
+            <!-- Challenge Section -->
+            <div id="challenge-section">
+                <div id="intro-section">
+                    <p>Welcome to the Mystery Box Startup Challenge! You'll receive a random combination of items and your mission is to create an innovative startup idea based on these items.</p>
+                    <p id="combinations-count">Current combinations: 0</p>
+                    <button id="start-btn" class="primary-btn">Start Challenge</button>
+                </div>
+
+                <div id="drawing-section" class="hidden">
+                    <h2>Drawing Combination...</h2>
+                    <div class="mystery-box">
+                        <div class="box-lid"></div>
+                        <div class="box-base"></div>
+                    </div>
+                    <div id="countdown">3</div>
+                </div>
+
+                <div id="result-section" class="hidden">
+                    <h2>Your Mystery Combination</h2>
+                    <div class="combination-display">
+                        <div id="combination-number" class="combination-number">Combination #</div>
+                        <div id="combination-items" class="combination-items"></div>
+                    </div>
+                    <p>Now create a startup idea using these items!</p>
+                    <div class="actions">
+                        <button id="draw-again-btn" class="secondary-btn">Draw Again</button>
+                        <button id="reset-btn" class="secondary-btn">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Section -->
+            <div id="admin-section" class="hidden">
+                <h2>Manage Combinations</h2>
+                
+                <!-- Add new combination form -->
+                <div class="form-group">
+                    <h3>Add New Combination</h3>
+                    <div class="form-row">
+                        <div style="flex: 1;">
+                            <label for="combination-number">Combination #</label>
+                            <input type="number" id="combination-number-input" placeholder="Enter combination number">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div style="flex: 1;">
+                            <label for="item1">Item 1</label>
+                            <input type="text" id="item1-input" placeholder="Enter first item">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="item2">Item 2</label>
+                            <input type="text" id="item2-input" placeholder="Enter second item">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="item3">Item 3</label>
+                            <input type="text" id="item3-input" placeholder="Enter third item">
+                        </div>
+                    </div>
+                    
+                    <button id="add-combination-btn" class="admin-btn">Add Combination</button>
+                </div>
+                
+                <!-- Bulk import textarea -->
+                <div class="form-group">
+                    <h3>Bulk Import</h3>
+                    <p>Paste combinations in format: "Combination #: Item1, Item2, Item3" (one per line)</p>
+                    <textarea id="bulk-import" placeholder="Example:
+Combination 1: Shoe, Flashlight, Compass
+Combination 2: Watch, Stethoscope, Language Translator"></textarea>
+                    <button id="import-btn" class="admin-btn">Import Combinations</button>
+                </div>
+                
+                <!-- Combination list -->
+                <div class="combination-list">
+                    <h3>Current Combinations</h3>
+                    <p id="no-combinations-msg">No combinations added yet.</p>
+                    <table class="combination-table hidden" id="combinations-table">
+                        <thead>
+                            <tr>
+                                <th>Combination #</th>
+                                <th>Items</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="combinations-tbody">
+                            <!-- Combinations will be listed here -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="actions">
+                        <button id="clear-all-btn" class="secondary-btn">Clear All Combinations</button>
+                        <button id="add-sample-btn" class="admin-btn">Add Sample Combinations</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 College Mystery Box Startup Challenge</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM elements - Challenge
+        const startBtn = document.getElementById('start-btn');
+        const drawAgainBtn = document.getElementById('draw-again-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const introSection = document.getElementById('intro-section');
+        const drawingSection = document.getElementById('drawing-section');
+        const resultSection = document.getElementById('result-section');
+        const combinationNumber = document.getElementById('combination-number');
+        const combinationItems = document.getElementById('combination-items');
+        const countdownElement = document.getElementById('countdown');
+        const mysteryBox = document.querySelector('.mystery-box');
+        const combinationsCountEl = document.getElementById('combinations-count');
+        
+        // DOM elements - Admin
+        const challengeTab = document.getElementById('challenge-tab');
+        const adminTab = document.getElementById('admin-tab');
+        const challengeSection = document.getElementById('challenge-section');
+        const adminSection = document.getElementById('admin-section');
+        const combinationNumberInput = document.getElementById('combination-number-input');
+        const item1Input = document.getElementById('item1-input');
+        const item2Input = document.getElementById('item2-input');
+        const item3Input = document.getElementById('item3-input');
+        const addCombinationBtn = document.getElementById('add-combination-btn');
+        const bulkImportTextarea = document.getElementById('bulk-import');
+        const importBtn = document.getElementById('import-btn');
+        const combinationsTable = document.getElementById('combinations-table');
+        const combinationsTbody = document.getElementById('combinations-tbody');
+        const noCombinationsMsg = document.getElementById('no-combinations-msg');
+        const clearAllBtn = document.getElementById('clear-all-btn');
+        const addSampleBtn = document.getElementById('add-sample-btn');
+        
+        // Initialize combinations
+        let combinations = [];
+        let usedCombinations = [];
+        
+        // Sample combinations for quick setup
+        const sampleCombinations = [
+            { number: 1, items: ["Shoe", "Flashlight", "Compass"] },
+            { number: 2, items: ["Watch", "Stethoscope", "Language Translator"] },
+            { number: 3, items: ["Bicycle", "Solar Charger", "Refrigerator"] },
+            { number: 4, items: ["Pen", "Voice Recorder", "Language Translator"] },
+            { number: 5, items: ["Umbrella", "Bluetooth Speaker", "Water Bottle"] }
+        ];
+        
+        // Load combinations from localStorage if available
+        function loadCombinations() {
+            const savedCombinations = localStorage.getItem('mysteryCombinations');
+            if (savedCombinations) {
+                combinations = JSON.parse(savedCombinations);
+                updateCombinationsTable();
+                updateCombinationsCount();
+            }
+        }
+        
+        // Save combinations to localStorage
+        function saveCombinations() {
+            localStorage.setItem('mysteryCombinations', JSON.stringify(combinations));
+            updateCombinationsCount();
+        }
+        
+        // Update combinations count display
+        function updateCombinationsCount() {
+            combinationsCountEl.textContent = `Current combinations: ${combinations.length}`;
+            
+            // Disable start button if no combinations
+            if (combinations.length === 0) {
+                startBtn.disabled = true;
+                startBtn.style.opacity = "0.5";
+                startBtn.title = "Add combinations in the Manage tab first";
+            } else {
+                startBtn.disabled = false;
+                startBtn.style.opacity = "1";
+                startBtn.title = "";
+            }
+        }
+        
+        // Initialize UI
+        loadCombinations();
+        updateCombinationsCount();
+        
+        // Tab navigation
+        challengeTab.addEventListener('click', () => {
+            adminTab.classList.remove('active');
+            challengeTab.classList.add('active');
+            adminSection.classList.add('hidden');
+            challengeSection.classList.remove('hidden');
+        });
+        
+        adminTab.addEventListener('click', () => {
+            challengeTab.classList.remove('active');
+            adminTab.classList.add('active');
+            challengeSection.classList.add('hidden');
+            adminSection.classList.remove('hidden');
+        });
+        
+        // Update combinations table
+        function updateCombinationsTable() {
+            if (combinations.length === 0) {
+                noCombinationsMsg.classList.remove('hidden');
+                combinationsTable.classList.add('hidden');
+                return;
+            }
+            
+            noCombinationsMsg.classList.add('hidden');
+            combinationsTable.classList.remove('hidden');
+            
+            // Sort combinations by number
+            combinations.sort((a, b) => a.number - b.number);
+            
+            // Clear table body
+            combinationsTbody.innerHTML = '';
+            
+            // Add rows for each combination
+            combinations.forEach(combo => {
+                const row = document.createElement('tr');
+                
+                const numberCell = document.createElement('td');
+                numberCell.textContent = combo.number;
+                row.appendChild(numberCell);
+                
+                const itemsCell = document.createElement('td');
+                itemsCell.textContent = combo.items.join(', ');
+                row.appendChild(itemsCell);
+                
+                const actionsCell = document.createElement('td');
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.addEventListener('click', () => deleteCombination(combo.number));
+                actionsCell.appendChild(deleteBtn);
+                row.appendChild(actionsCell);
+                
+                combinationsTbody.appendChild(row);
+            });
+        }
+        
+        // Add a single combination
+        function addCombination() {
+            const number = parseInt(combinationNumberInput.value);
+            const item1 = item1Input.value.trim();
+            const item2 = item2Input.value.trim();
+            const item3 = item3Input.value.trim();
+            
+            if (isNaN(number) || number <= 0) {
+                alert('Please enter a valid combination number.');
+                return;
+            }
+            
+            if (!item1 || !item2 || !item3) {
+                alert('Please enter all three items.');
+                return;
+            }
+            
+            // Check if combination number already exists
+            const existingIndex = combinations.findIndex(c => c.number === number);
+            if (existingIndex >= 0) {
+                // Update existing combination
+                combinations[existingIndex].items = [item1, item2, item3];
+            } else {
+                // Add new combination
+                combinations.push({
+                    number: number,
+                    items: [item1, item2, item3]
+                });
+            }
+            
+            // Clear inputs
+            combinationNumberInput.value = '';
+            item1Input.value = '';
+            item2Input.value = '';
+            item3Input.value = '';
+            
+            // Update table and save
+            updateCombinationsTable();
+            saveCombinations();
+        }
+        
+        // Delete a combination
+        function deleteCombination(number) {
+            combinations = combinations.filter(c => c.number !== number);
+            updateCombinationsTable();
+            saveCombinations();
+        }
+        
+        // Clear all combinations
+        function clearAllCombinations() {
+            if (combinations.length === 0) return;
+            
+            if (confirm('Are you sure you want to delete all combinations?')) {
+                combinations = [];
+                updateCombinationsTable();
+                saveCombinations();
+            }
+        }
+        
+        // Import combinations from bulk text
+        function importCombinations() {
+            const bulkText = bulkImportTextarea.value.trim();
+            if (!bulkText) {
+                alert('Please enter combinations to import.');
+                return;
+            }
+            
+            const lines = bulkText.split('\n');
+            let importCount = 0;
+            
+            lines.forEach(line => {
+                // Match pattern like "Combination X: Item1, Item2, Item3"
+                const match = line.match(/Combination\s+(\d+):\s+(.+)/i);
+                if (match) {
+                    const number = parseInt(match[1]);
+                    const itemsText = match[2];
+                    const items = itemsText.split(',').map(item => item.trim()).filter(item => item);
+                    
+                    if (items.length >= 3) {
+                        // Keep only first 3 items if more are provided
+                        const itemsToAdd = items.slice(0, 3);
+                        
+                        // Check if combination number already exists
+                        const existingIndex = combinations.findIndex(c => c.number === number);
+                        if (existingIndex >= 0) {
+                            // Update existing combination
+                            combinations[existingIndex].items = itemsToAdd;
+                        } else {
+                            // Add new combination
+                            combinations.push({
+                                number: number,
+                                items: itemsToAdd
+                            });
+                        }
+                        
+                        importCount++;
+                    }
+                }
+            });
+            
+            if (importCount > 0) {
+                updateCombinationsTable();
+                saveCombinations();
+                bulkImportTextarea.value = '';
+                alert(`Successfully imported ${importCount} combinations.`);
+            } else {
+                alert('No valid combinations found. Please check the format and try again.');
+            }
+        }
+        
+        // Add sample combinations
+        function addSampleCombinations() {
+            sampleCombinations.forEach(sample => {
+                // Only add if number doesn't exist
+                if (!combinations.some(c => c.number === sample.number)) {
+                    combinations.push(sample);
+                }
+            });
+            
+            updateCombinationsTable();
+            saveCombinations();
+        }
+        
+        // Challenge functions
+        function startDrawing() {
+            if (combinations.length === 0) {
+                alert('Please add combinations in the Manage tab first.');
+                adminTab.click(); // Switch to admin tab
+                return;
+            }
+            
+            // Hide intro or result section
+            introSection.classList.add('hidden');
+            resultSection.classList.add('hidden');
+            drawingSection.classList.remove('hidden');
+            
+            // Reset mystery box
+            mysteryBox.classList.remove('open-box');
+            
+            // Start countdown
+            let count = 3;
+            countdownElement.textContent = count;
+            
+            const countdownInterval = setInterval(() => {
+                count--;
+                countdownElement.textContent = count;
+                
+                if (count === 0) {
+                    clearInterval(countdownInterval);
+                    // Open the box
+                    mysteryBox.classList.add('open-box');
+                    
+                    // Wait a moment before showing result
+                    setTimeout(() => {
+                        showResult();
+                    }, 1000);
+                }
+            }, 1000);
+        }
+        
+        function showResult() {
+            // Get random combination
+            const randomCombination = getRandomCombination();
+            
+            // Set combination details
+            combinationNumber.textContent = `Combination #${randomCombination.number}`;
+            
+            // Create items with animation
+            combinationItems.innerHTML = '';
+            randomCombination.items.forEach(item => {
+                const itemSpan = document.createElement('span');
+                itemSpan.className = 'item';
+                itemSpan.textContent = item;
+                combinationItems.appendChild(itemSpan);
+            });
+            
+            // Hide drawing section and show result
+            drawingSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+        }
+        
+        function getRandomCombination() {
+            // Reset used combinations if all have been used or if there are new combinations
+            if (usedCombinations.length >= combinations.length) {
+                usedCombinations = [];
+            }
+            
+            // Filter out recently used combinations
+            let availableCombinations = combinations.filter(combo => 
+                !usedCombinations.includes(combo.number)
+            );
+            
+            // If somehow all are used (shouldn't happen with the reset above)
+            if (availableCombinations.length === 0) {
+                usedCombinations = [];
+                availableCombinations = combinations;
+            }
+            
+            // Select a random combination
+            const randomIndex = Math.floor(Math.random() * availableCombinations.length);
+            const selectedCombination = availableCombinations[randomIndex];
+            
+            // Add to used combinations
+            usedCombinations.push(selectedCombination.number);
+            
+            return selectedCombination;
+        }
+        
+        function resetChallenge() {
+            // Reset to initial state
+            resultSection.classList.add('hidden');
+            introSection.classList.remove('hidden');
+        }
+        
+        // Event listeners - Challenge
+        startBtn.addEventListener('click', startDrawing);
+        drawAgainBtn.addEventListener('click', startDrawing);
+        resetBtn.addEventListener('click', resetChallenge);
+        
+        // Event listeners - Admin
+        addCombinationBtn.addEventListener('click', addCombination);
+        importBtn.addEventListener('click', importCombinations);
+        clearAllBtn.addEventListener('click', clearAllCombinations);
+        addSampleBtn.addEventListener('click', addSampleCombinations);
+    </script>
+</body>
+</html>
