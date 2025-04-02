@@ -10,7 +10,7 @@ const combinationItems = document.getElementById('combination-items');
 const countdownElement = document.getElementById('countdown');
 const mysteryBox = document.querySelector('.mystery-box');
 const combinationsCountEl = document.getElementById('combinations-count');
-
+const boxLid = document.querySelector('.box-lid');
 // ======== DOM Elements - Admin & Navigation Tabs ========
 const navTabs = document.querySelector('.nav-tabs');
 const challengeTab = document.getElementById('challenge-tab');
@@ -283,6 +283,7 @@ function startDrawing() {
   resultSection.classList.add('hidden');
   drawingSection.classList.remove('hidden');
   navTabs.classList.add('hidden');
+  boxLid.classList.add("shaking")
   
   mysteryBox.classList.remove('open-box');
   let count = 3;
@@ -293,7 +294,8 @@ function startDrawing() {
     countdownElement.textContent = count;
     if (count === 0) {
       clearInterval(countdownInterval);
-      mysteryBox.classList.add('open-box');
+      boxLid.classList.remove("shaking")
+      mysteryBox.classList.add('open-box');      
       setTimeout(() => {
         showResult();
       }, 1000);
