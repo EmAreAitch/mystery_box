@@ -1,0 +1,387 @@
+/* Root Colors Inspired by a Vibrant Poster */
+:root {
+  --primary-color: #58149c;    /* Deep purple */
+  --secondary-color: #f7931e;  /* Bright orange */
+  --accent-color: #fcba03;     /* Gold accent */
+  --background-color: #e6e0f8;   /* Soft, pastel background */
+  --text-color: #333;
+  --box-color: #7c4ae4;
+  --box-lid-color: #9b6fe8;
+  --card-bg: #dcd0ff;          /* Non-white card background */
+  --admin-color: #2c974b;
+}
+
+/* Global Reset & Fonts */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-image: url('background.png');
+  background-size: cover; /* Ensures the image covers the entire area */
+  background-position: bottom; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents repeating */
+  border-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)) fill 1;
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* Container */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Colorful Wave Header */
+header {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.wave-bg {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary-color) 40%, var(--secondary-color) 100%);
+  padding: 2rem 1rem 5rem 1rem;
+  position: relative;
+  clip-path: ellipse(80% 70% at 50% 30%);
+}
+
+.header-content {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  color: #fff;
+}
+
+.header-icon {
+  width: 80px;
+  margin-bottom: 1rem;
+}
+
+.header-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* Navigation Tabs */
+.nav-tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: -3rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.nav-tab {
+  padding: 0.7rem 1.5rem;
+  margin: 0 0.5rem;
+  background-color: #ddd;
+  border-radius: 5px 5px 0 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.nav-tab.active {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.nav-tab.admin {
+  background-color: var(--admin-color);
+  color: #fff;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Intro Section */
+#intro-section p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  font-weight: bolder;
+}
+
+/* Buttons */
+.primary-btn,
+.secondary-btn,
+.admin-btn {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.primary-btn {
+  background-color: var(--primary-color);
+  color: #fff;
+  margin-top: 1rem;
+}
+
+.secondary-btn {
+  background-color: var(--secondary-color);
+  color: #fff;
+  margin: 0 0.5rem;
+}
+
+.admin-btn {
+  background-color: var(--admin-color);
+  color: #fff;
+  margin: 0.5rem 0.5rem;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover,
+.admin-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.primary-btn:active,
+.secondary-btn:active,
+.admin-btn:active {
+  transform: translateY(-1px);
+}
+
+/* Mystery Box Animation */
+.mystery-box {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 2rem auto;
+}
+
+.box-base {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 70%;
+  background-color: var(--box-color);
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.box-lid {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 40%;
+  background-color: var(--box-lid-color);
+  border-radius: 10px 10px 0 0;
+  transform-origin: top;
+  transition: transform 0.5s ease;
+  z-index: 2;
+}
+
+.open-box .box-lid {
+  transform: rotateX(-180deg);
+}
+
+/* Countdown */
+#countdown {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 1rem 0;
+  color: var(--secondary-color);
+}
+
+/* Combination Display */
+.combination-display {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Combination Number */
+.combination-number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+/* Combination Items as Curved Buttons */
+.combination-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 1.5rem 0;
+}
+
+.item {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #e9eaff;
+  border: none;
+  border-radius: 50px;
+  font-weight: bold;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.item:hover {
+  background-color: var(--accent-color);
+}
+
+/* Admin Section */
+#admin-section {
+  width: 100%;
+  max-width: 800px;
+  text-align: left;
+}
+
+#admin-section h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.combination-list {
+  margin: 2rem 0;
+  width: 100%;
+}
+
+.combination-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+.combination-table th,
+.combination-table td {
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+}
+
+.combination-table th {
+  background-color: var(--primary-color);
+  color: #fff;
+  text-align: left;
+}
+
+.combination-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.combination-table tr:hover {
+  background-color: #e9eaff;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Results Section */
+#results-section {
+  max-width: 600px;
+  width: 100%;
+  margin: 2rem auto;
+}
+
+.result-card {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.result-card #result-round-number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.result-card #result-team-combination {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.result-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+}
+
+/* Utility Classes */
+.hidden {
+  display: none;
+}
