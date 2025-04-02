@@ -1,4 +1,4 @@
-// DOM elements - Challenge
+// ======== DOM Elements - Challenge ========
 const startBtn = document.getElementById('start-btn');
 const drawAgainBtn = document.getElementById('draw-again-btn');
 const resetBtn = document.getElementById('reset-btn');
@@ -11,7 +11,7 @@ const countdownElement = document.getElementById('countdown');
 const mysteryBox = document.querySelector('.mystery-box');
 const combinationsCountEl = document.getElementById('combinations-count');
 
-// DOM elements - Admin & Navigation Tabs
+// ======== DOM Elements - Admin & Navigation Tabs ========
 const navTabs = document.querySelector('.nav-tabs');
 const challengeTab = document.getElementById('challenge-tab');
 const adminTab = document.getElementById('admin-tab');
@@ -19,7 +19,7 @@ const resultsTab = document.getElementById('results-tab');
 const challengeSection = document.getElementById('challenge-section');
 const adminSection = document.getElementById('admin-section');
 
-// DOM elements - Admin Form
+// ======== DOM Elements - Admin Form ========
 const combinationNumberInput = document.getElementById('combination-number-input');
 const item1Input = document.getElementById('item1-input');
 const item2Input = document.getElementById('item2-input');
@@ -33,21 +33,22 @@ const noCombinationsMsg = document.getElementById('no-combinations-msg');
 const clearAllBtn = document.getElementById('clear-all-btn');
 const addSampleBtn = document.getElementById('add-sample-btn');
 
-// DOM elements - Results Section
+// ======== DOM Elements - Results Section ========
 const resultsSection = document.getElementById('results-section');
 const resultRoundNumber = document.getElementById('result-round-number');
 const resultTeamCombination = document.getElementById('result-team-combination');
 const prevResultBtn = document.getElementById('prev-result-btn');
 const nextResultBtn = document.getElementById('next-result-btn');
+const clearResultsBtn = document.getElementById('clear-results-btn'); // New clear results button
 
-// Global arrays and counters
+// ======== Global Arrays and Counters ========
 let combinations = [];
 let usedCombinations = [];
 let roundResults = []; // To store each round's result along with team info
 let currentRound = 1;  // Increments with each drawn round
 let currentResultIndex = 0; // For navigating round results
 
-// Sample combinations for quick setup
+// ======== Sample Combinations for Quick Setup ========
 const sampleCombinations = [
   { number: 1, items: ["Shoe", "Flashlight", "Compass"] },
   { number: 2, items: ["Watch", "Stethoscope", "Language Translator"] },
@@ -56,7 +57,7 @@ const sampleCombinations = [
   { number: 5, items: ["Umbrella", "Bluetooth Speaker", "Water Bottle"] }
 ];
 
-// Local Storage Functions
+// ======== Local Storage Functions for Combinations ========
 function loadCombinations() {
   const savedCombinations = localStorage.getItem('mysteryCombinations');
   if (savedCombinations) {
@@ -75,11 +76,29 @@ function updateCombinationsCount() {
   combinationsCountEl.textContent = `Current combinations: ${combinations.length}`;
 }
 
-// Initialize UI
+// ======== Local Storage Functions for Round Results ========
+function loadResults() {
+  const savedResults = localStorage.getItem('roundResults');
+  if (savedResults) {
+    roundResults = JSON.parse(savedResults);
+    // Set current round and current result index based on stored results
+    if (roundResults.length > 0) {
+      currentRound = roundResults[roundResults.length - 1].round + 1;
+      currentResultIndex = roundResults.length - 1;
+    }
+  }
+}
+
+function saveResults() {
+  localStorage.setItem('roundResults', JSON.stringify(roundResults));
+}
+
+// ======== Initialize UI ========
 loadCombinations();
+loadResults();
 updateCombinationsCount();
 
-// Tab Navigation
+// ======== Tab Navigation ========
 challengeTab.addEventListener('click', () => {
   challengeTab.classList.add('active');
   adminTab.classList.remove('active');
@@ -116,11 +135,11 @@ resultsTab.addEventListener('click', () => {
   navTabs.classList.remove('hidden');
 
   // Show the latest round result
-  currentResultIndex = 0
+  currentResultIndex = 0;
   updateResultsCard();
 });
 
-// Update Combinations Table (Admin Section)
+// ======== Update Combinations Table (Admin Section) ========
 function updateCombinationsTable() {
   if (combinations.length === 0) {
     noCombinationsMsg.classList.remove('hidden');
@@ -157,7 +176,7 @@ function updateCombinationsTable() {
   });
 }
 
-// Add a single combination (Admin Section)
+// ======== Admin Functions ========
 function addCombination() {
   const number = parseInt(combinationNumberInput.value);
   const item1 = item1Input.value.trim();
@@ -252,7 +271,7 @@ function addSampleCombinations() {
   saveCombinations();
 }
 
-// Challenge Functions
+// ======== Challenge Functions ========
 function startDrawing() {
   if (combinations.length === 0) {
     alert('Please add combinations in the Manage tab first.');
@@ -294,7 +313,7 @@ function showResult() {
   });
 
   // Determine team label based on current round (odd: Team 1, even: Team 2)
-  const teamLabel = `Team ${currentRound}`
+  const teamLabel = `Team ${currentRound}`;
 
   // Store result with round number, team, and combination details
   roundResults.push({
@@ -302,6 +321,8 @@ function showResult() {
     team: teamLabel,
     combination: randomCombination
   });
+  saveResults(); // Persist the updated results
+
   currentRound++;
 
   drawingSection.classList.add('hidden');
@@ -330,18 +351,7 @@ function resetChallenge() {
   navTabs.classList.remove('hidden');
 }
 
-// Event Listeners - Challenge
-startBtn.addEventListener('click', startDrawing);
-drawAgainBtn.addEventListener('click', startDrawing);
-resetBtn.addEventListener('click', resetChallenge);
-
-// Event Listeners - Admin
-addCombinationBtn.addEventListener('click', addCombination);
-importBtn.addEventListener('click', importCombinations);
-clearAllBtn.addEventListener('click', clearAllCombinations);
-addSampleBtn.addEventListener('click', addSampleCombinations);
-
-// Results Navigation Functions
+// ======== Results Navigation Functions ========
 function updateResultsCard() {
   if (roundResults.length === 0) {
     resultRoundNumber.textContent = "No results yet.";
@@ -374,3 +384,25 @@ nextResultBtn.addEventListener('click', () => {
   currentResultIndex = (currentResultIndex + 1) % roundResults.length;
   updateResultsCard();
 });
+
+// ======== Clear Round Results ========
+clearResultsBtn.addEventListener('click', () => {
+  if (confirm('Are you sure you want to clear all results?')) {
+    roundResults = [];
+    currentRound = 1;
+    currentResultIndex = 0;
+    localStorage.removeItem('roundResults');
+    updateResultsCard(); // Clear the results display
+  }
+});
+
+// ======== Event Listeners - Challenge ========
+startBtn.addEventListener('click', startDrawing);
+drawAgainBtn.addEventListener('click', startDrawing);
+resetBtn.addEventListener('click', resetChallenge);
+
+// ======== Event Listeners - Admin ========
+addCombinationBtn.addEventListener('click', addCombination);
+importBtn.addEventListener('click', importCombinations);
+clearAllBtn.addEventListener('click', clearAllCombinations);
+addSampleBtn.addEventListener('click', addSampleCombinations);

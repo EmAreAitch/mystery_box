@@ -22,7 +22,7 @@
 body {
   background-image: url('background.png');
   background-size: cover; /* Ensures the image covers the entire area */
-  background-position: bottom; /* Centers the image */
+  background-position: bottom; /* Positions the image at the bottom */
   background-repeat: no-repeat; /* Prevents repeating */
   border-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)) fill 1;
   color: var(--text-color);
